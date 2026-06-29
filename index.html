@@ -556,7 +556,7 @@
             if (!appData.shifts[activeMonth]) appData.shifts[activeMonth] = [];
 
             let finalCampusName = globalCampus;
-            if (globalCampus === 'その他') {
+if (globalCampus === 'その他') {
                 finalCampusName = document.getElementById('custom-campus-name').value || '他校舎';
             }
 
@@ -615,15 +615,30 @@
             reader.onload = function (e) {
                 const img = new Image();
                 img.onload = function () {
-                    const canvas = document.createElement('canvas'); const width = 400; const scale = width / img.width;
-                    canvas.width = width; canvas.height = img.height * scale;
-                    const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    expBase64 = canvas.toDataURL('image/jpeg', 0.6);
+                    const canvas = document.createElement('canvas');
+                    
+                    const MAX_WIDTH = 1600;
+                    let width = img.width;
+                    let height = img.height;
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+                    
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    expBase64 = canvas.toDataURL('image/jpeg', 0.9);
                 };
                 img.src = e.target.result;
             };
             reader.readAsDataURL(file);
         }
+
+        // 編集対象のインデックスを保持する変数
+        let editingExpenseIndex = null;
 
         function submitExpense() {
             const amt = parseFloat(document.getElementById('exp-amount').value) || 0;
@@ -631,7 +646,27 @@
             if (amt <= 0) { alert('金額を入力してください。'); return; }
 
             if (!appData.expenses[activeMonth]) appData.expenses[activeMonth] = [];
-            appData.expenses[activeMonth].push({ campus: expCampus, amount: amt, note: note, receipt: expBase64, date: new Date().toLocaleDateString('ja-JP', {month:'2-digit', day:'2-digit'}) });
+
+            if (editingExpenseIndex !== null) {
+                // 編集モード：既存のデータを上書き
+                appData.expenses[activeMonth][editingExpenseIndex] = {
+                    campus: expCampus,
+                    amount: amt,
+                    note: note,
+                    receipt: expBase64 || appData.expenses[activeMonth][editingExpenseIndex].receipt, // 新しい画像がなければ保持
+                    date: appData.expenses[activeMonth][editingExpenseIndex].date
+                };
+                editingExpenseIndex = null; // 編集モード終了
+            } else {
+                // 新規登録モード
+                appData.expenses[activeMonth].push({ 
+                    campus: expCampus, 
+                    amount: amt, 
+                    note: note, 
+                    receipt: expBase64, 
+                    date: new Date().toLocaleDateString('ja-JP', {month:'2-digit', day:'2-digit'}) 
+                });
+            }
 
             saveMasterData(); renderDashboard();
             document.getElementById('exp-amount').value = '';
@@ -639,6 +674,41 @@
             document.getElementById('exp-file').value = '';
             document.getElementById('exp-file-label').innerText = "領収書イメージをインポート";
             expBase64 = "";
+        }
+
+        // 経費削除を実行する関数
+        function removeExpense(index) {
+            if (confirm('この経費データを削除しますか？')) {
+                appData.expenses[activeMonth].splice(index, 1);
+                saveMasterData();
+                renderDashboard();
+            }
+        }
+
+        // 経費編集フォームにデータを呼び出す関数
+        function editExpense(index) {
+            const expense = appData.expenses[activeMonth][index];
+            document.getElementById('exp-amount').value = expense.amount;
+            document.getElementById('exp-note').value = expense.note;
+            expCampus = expense.campus;
+            expBase64 = ""; // 一旦初期化（再設定しなければ元の画像を維持するロジック）
+
+            // どの経費を編集しているかインデックスを記憶
+            editingExpenseIndex = index;
+
+            // ボタンのアクティブ状態を連動
+            const buttons = document.querySelectorAll('.expense-item-area .pill-btn, #expense-form-container .pill-btn'); 
+            buttons.forEach(b => {
+                if (b.innerText.trim() === expense.campus) {
+                    b.classList.add('active');
+                } else {
+                    b.classList.remove('remove');
+                    b.classList.remove('active');
+                }
+            });
+
+            // フォームへスクロール
+            document.getElementById('exp-amount').scrollIntoView({ behavior: 'smooth' });
         }
 
         function openLightbox(src) { document.getElementById('lightbox').style.display = "flex"; document.getElementById('lightbox-img').src = src; }
@@ -708,7 +778,7 @@
             let kameidoUsed = 0, takaidoUsed = 0;
             const eMinilist = document.getElementById('expense-mini-list'); eMinilist.innerHTML = '';
             currentExpenses.forEach((e) => {
-                if (e.campus === '亀戸') kameidoUsed += e.amount;
+                if (e.campus === '亀亀戸' || e.campus === '亀戸') kameidoUsed += e.amount;
                 if (e.campus === '下高井戸') takaidoUsed += e.amount;
             });
 
@@ -717,26 +787,9 @@
                 const imgNode = e.receipt ? `<img src="${e.receipt}" class="thumb-receipt" onclick="openLightbox('${e.receipt}')">` : '<span>—</span>';
                 const item = `<div class="expense-item">
                     <div><strong>[${e.campus}]</strong> ¥${e.amount.toLocaleString()}<br><span style="color:var(--text-sub); font-size:10px;">${e.date} - ${e.note}</span></div>
-                    <div style="display:flex; align-items:center; gap:6px;">${imgNode}<button class="btn-action-icon" onclick="removeExpense('${origIdx}')">削除</button></div>
-                </div>`;
-                eMinilist.insertAdjacentHTML('beforeend', item);
-            });
-
-            const kRem = Math.max(0, 6000 - kameidoUsed); const tRem = Math.max(0, 2000 - takaidoUsed);
-            const kPct = Math.min(100, (kameidoUsed / 6000) * 100); const tPct = Math.min(100, (takaidoUsed / 2000) * 100);
-
-            document.getElementById('dash-salary').innerText = '¥' + grandSalary.toLocaleString();
-            document.getElementById('dash-hours').innerText = grandHours.toFixed(1) + 'h';
-            document.getElementById('dash-kameido-rem').innerText = '¥' + kRem.toLocaleString();
-            document.getElementById('dash-kameido-used').innerText = `利用: ¥${kameidoUsed.toLocaleString()} / 上限: ¥6,000`;
-            const pbKameido = document.getElementById('pb-kameido'); pbKameido.style.width = kPct + '%';
-            pbKameido.className = `progress-bar ${kPct >= 90 ? 'danger' : kPct >= 60 ? 'warning' : ''}`;
-
-            document.getElementById('dash-takaido-rem').innerText = '¥' + tRem.toLocaleString();
-            document.getElementById('dash-takaido-used').innerText = `利用: ¥${takaidoUsed.toLocaleString()} / 上限: ¥2,000`;
-            const pbTakaido = document.getElementById('pb-takaido'); pbTakaido.style.width = tPct + '%';
-            pbTakaido.className = `progress-bar ${tPct >= 90 ? 'danger' : tPct >= 60 ? 'warning' : ''}`;
-        }
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        ${imgNode}
+                        <button class="btn-
     </script>
 </body>
 </html>
