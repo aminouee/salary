@@ -525,6 +525,11 @@
     </style>
 </head>
 <body>
+    <div style="padding: 10px; background: #f0f0f0; text-align: center;">
+    <label for="global-month" style="font-weight: bold; margin-right: 5px;">対象月選択：</label>
+    <select id="global-month" style="padding: 5px; font-size: 16px;">
+        </select>
+</div>
     <div class="container">
         <div class="header-area">
             <div class="title-route">マイページ <span>/ 給与・経費管理</span></div>
@@ -651,12 +656,11 @@
         let shiftBlockCount = 0;
         let editingDateKey = null;
         let editingExpenseIndex = null;
-        
+
 // 過去の埋め込みデータは破棄し、空の状態で初期化
         let appData = { shifts: {}, expenses: {} };
         
-        try { 
-            // ローカルストレージに既存のデータがあればそれを使い、なければ空で初期化
+        try {
             const localData = localStorage.getItem('v17_appMasterData');
             if (localData) {
                 appData = JSON.parse(localData);
@@ -669,40 +673,35 @@
 
         // プルダウンメニュー（要素）を取得して初期化
         const monthSelect = document.getElementById('global-month');
-        monthSelect.innerHTML = ''; 
+        if (monthSelect) {
+            monthSelect.innerHTML = ''; 
 
-        // 2026年6月支給〜2027年4月支給までの選択肢を固定生成
-        const staticMonths = [
-            { value: "2027-04", text: "2027年4月 支給分" },
-            { value: "2027-03", text: "2027年3月 支給分" },
-            { value: "2027-02", text: "2027年2月 支給分" },
-            { value: "2027-01", text: "2027年1月 支給分" },
-            { value: "2026-12", text: "2026年12月 支給分" },
-            { value: "2026-11", text: "2026年11月 支給分" },
-            { value: "2026-10", text: "2026年10月 支給分" },
-            { value: "2026-09", text: "2026年9月 支給分" },
-            { value: "2026-08", text: "2026年8月 支給分" },
-            { value: "2026-07", text: "2026年7月 支給分" },
-            { value: "2026-06", text: "2026年6月 支給分" }
-        ];
+            // 2026年6月支給〜2027年4月支給までの選択肢を固定生成
+            const staticMonths = [
+                { value: "2027-04", text: "2027年4月 支給分" },
+                { value: "2027-03", text: "2027年3月 支給分" },
+                { value: "2027-02", text: "2027年2月 支給分" },
+                { value: "2027-01", text: "2027年1月 支給分" },
+                { value: "2026-12", text: "2026年12月 支給分" },
+                { value: "2026-11", text: "2026年11月 支給分" },
+                { value: "2026-10", text: "2026年10月 支給分" },
+                { value: "2026-09", text: "2026年9月 支給分" },
+                { value: "2026-08", text: "2026年8月 支給分" },
+                { value: "2026-07", text: "2026年7月 支給分" },
+                { value: "2026-06", text: "2026年6月 支給分" }
+            ];
 
-        // 選択肢をプルダウンに追加
-        staticMonths.forEach(item => {
-            const option = document.createElement('option');
-            option.value = item.value;
-            option.innerText = item.text;
-            monthSelect.appendChild(option);
-        });
-
-        // 現在選択されている月を基準に設定
-        let activeMonth = monthSelect.value;
-                   if (embeddedDataStr && embeddedDataStr !== '') {
-                try { appData = JSON.parse(embeddedDataStr); } catch(e) { console.error("Initial data loading failed", e); }
-            }
+            // 選択肢をプルダウンに追加
+            staticMonths.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.value;
+                option.innerText = item.text;
+                monthSelect.appendChild(option);
+            });
         }
 
-        // 最新のキー（v17）に保存を統一する
-        localStorage.setItem('v17_appMasterData', JSON.stringify(appData));
+        // 現在選択されている月を基準に設定
+        let activeMonth = monthSelect ? monthSelect.value : "";
 
         // 3. 固定値ではなく、当月を中心に前後6ヶ月の選択肢を正しく生成する
         const monthSelect = document.getElementById('global-month');
