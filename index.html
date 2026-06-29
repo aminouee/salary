@@ -1126,9 +1126,11 @@
         function openLightbox(src) { document.getElementById('lightbox').style.display = "flex"; document.getElementById('lightbox-img').src = src; }
         function closeLightbox() { document.getElementById('lightbox').style.display = "none"; }
 
-        function renderDashboard() {
+       function renderDashboard() {
             const currentShifts = getActiveShifts();
             const currentExpenses = getActiveExpenses();
+            // もしactiveMonthが空だった場合のバグを防ぐ処理を追加
+            if (!activeMonth) return; 
             const displayMonthText = activeMonth.split('-')[1];
             document.getElementById('salary-card-title').innerText = `${parseInt(displayMonthText)}月20日 支給額`;
             const sBody = document.getElementById('shift-table-body'); sBody.innerHTML = '';
