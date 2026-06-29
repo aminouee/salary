@@ -31,7 +31,7 @@
             color: var(--text-main); 
             min-height: 100vh; 
             -webkit-font-smoothing: antialiased; 
-            padding: 24px; 
+            padding: 16px; /* スマホ向けに余白を狭めて画面幅を確保 */
         }
         .container { 
             max-width: 100%; 
@@ -42,13 +42,13 @@
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            margin-bottom: 24px; 
+            margin-bottom: 20px; 
             flex-wrap: wrap; 
-            gap: 16px; 
+            gap: 12px; 
             width: 100%; 
         }
         .title-route { 
-            font-size: 22px; 
+            font-size: 20px; 
             font-weight: 700; 
             letter-spacing: -0.5px; 
         }
@@ -64,9 +64,10 @@
             padding: 6px 12px; 
             border-radius: 12px; 
             border: 1px solid var(--border); 
+            width: 100%; /* スマホで横いっぱいに広げる */
         }
         .month-select { 
-            padding: 6px 12px; 
+            padding: 8px 12px; 
             border-radius: 8px; 
             border: 1px solid var(--border); 
             background: var(--bg-main); 
@@ -75,43 +76,47 @@
             color: var(--text-main); 
             outline: none; 
             cursor: pointer; 
+            width: 100%; /* セレクトボックスを押しやすく */
         }
+        
+        /* ダッシュボード（スマホで2列、PCで4列） */
         .dashboard-grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
-            gap: 16px; 
-            margin-bottom: 24px; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 12px; 
+            margin-bottom: 20px; 
             width: 100%; 
         }
         .stat-card { 
             background: var(--surface); 
             border: 1px solid var(--border); 
-            padding: 20px; 
-            border-radius: 16px; 
+            padding: 14px; 
+            border-radius: 14px; 
             box-shadow: 0 1px 3px rgba(0,0,0,0.02); 
         }
         .stat-label { 
-            font-size: 13px; 
-            color: var(--text-sub); 
-            font-weight: 600; 
-            margin-bottom: 6px; 
-        }
-        .stat-value { 
-            font-size: 22px; 
-            font-weight: 700; 
-            letter-spacing: -0.5px; 
-            margin-bottom: 6px; 
-        }
-        .stat-subtext { 
             font-size: 12px; 
             color: var(--text-sub); 
+            font-weight: 600; 
+            margin-bottom: 4px; 
+        }
+        .stat-value { 
+            font-size: 18px; 
+            font-weight: 700; 
+            letter-spacing: -0.5px; 
+            margin-bottom: 4px; 
+        }
+        .stat-subtext { 
+            font-size: 11px; 
+            color: var(--text-sub); 
+            line-height: 1.2;
         }
         .progress-container { 
             width: 100%; 
             height: 6px; 
             background: #f1f5f9; 
             border-radius: 3px; 
-            margin-top: 8px; 
+            margin-top: 6px; 
             overflow: hidden; 
         }
         .progress-bar { 
@@ -123,21 +128,18 @@
         .progress-bar.warning { background: var(--warning); }
         .progress-bar.danger { background: var(--danger); }
         
+        /* メインレイアウト（スマホ時は縦一列、1100px以上で3列） */
         .main-layout { 
-            display: grid; 
-            grid-template-columns: minmax(300px, 340px) minmax(320px, 420px) 1fr; 
-            gap: 20px; 
-            align-items: start; 
+            display: flex;
+            flex-direction: column;
+            gap: 16px; 
             width: 100%; 
-        }
-        @media (max-width: 1100px) {
-            .main-layout { grid-template-columns: 1fr; }
         }
         .panel { 
             background: var(--surface); 
             border: 1px solid var(--border); 
             border-radius: 16px; 
-            padding: 20px; 
+            padding: 16px; 
             box-shadow: 0 1px 3px rgba(0,0,0,0.02); 
             width: 100%; 
         }
@@ -145,7 +147,7 @@
             font-size: 15px; 
             font-weight: 700; 
             color: var(--text-main); 
-            margin-bottom: 16px; 
+            margin-bottom: 14px; 
         }
         .group-label { 
             font-size: 12px; 
@@ -165,9 +167,9 @@
         }
         .pill-btn { 
             flex: 1; 
-            min-width: 50px; 
+            min-width: 70px; 
             border: none; 
-            padding: 8px 4px; 
+            padding: 10px 4px; /* スマホでタップしやすい高さ */
             border-radius: 7px; 
             cursor: pointer; 
             font-size: 12px; 
@@ -175,7 +177,7 @@
             background: transparent; 
             color: var(--text-sub); 
             text-align: center; 
-            min-height: 36px; 
+            min-height: 38px; 
         }
         .pill-btn.active { 
             background: var(--surface); 
@@ -185,7 +187,7 @@
         .form-stack { 
             display: flex; 
             flex-direction: column; 
-            gap: 10px; 
+            gap: 12px; 
         }
         .field { 
             display: flex; 
@@ -206,45 +208,51 @@
             background: #f8fafc; 
             color: var(--text-main); 
             width: 100%; 
-            min-height: 38px; 
+            min-height: 40px; 
+            -webkit-appearance: none; /* iOSのデフォルト丸みをリセット */
         }
         .hidden { display: none !important; }
+        
+        /* シフトブロックの調整 */
         .shift-block-input { 
             background: #f8fafc; 
             border: 1px solid var(--border); 
             border-radius: 12px; 
             padding: 12px; 
-            margin-bottom: 10px; 
+            margin-bottom: 12px; 
         }
         .shift-block-title { 
             font-size: 12px; 
             font-weight: 700; 
             color: var(--primary); 
-            margin-bottom: 6px; 
+            margin-bottom: 8px; 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
         }
+        
+        /* 時計ピッカー（スマホ画面幅に綺麗に収める） */
         .time-picker-ui { 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
             background: var(--surface); 
-            padding: 10px; 
+            padding: 10px 4px; 
             border-radius: 10px; 
             border: 1px solid var(--border); 
             margin-top: 4px; 
             gap: 8px; 
+            width: 100%;
         }
         .time-range-display { 
-            font-size: 14px; 
+            font-size: 13px; 
             font-weight: 700; 
             color: var(--accent); 
             text-align: center; 
         }
         .clocks-row { 
             display: flex; 
-            gap: 12px; 
+            gap: 8px; 
             justify-content: center; 
             width: 100%; 
         }
@@ -252,30 +260,31 @@
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            gap: 2px; 
+            gap: 4px; 
+            width: 50%;
         }
         .clock-wrapper span { 
-            font-size: 10px; 
-            font-weight: 600; 
+            font-size: 11px; 
+            font-weight: 700; 
             color: var(--text-sub); 
         }
         .ampm-box { 
             display: flex; 
             background: #e2e8f0; 
             padding: 2px; 
-            border-radius: 5px; 
-            width: 70px; 
-            margin-bottom: 2px; 
+            border-radius: 6px; 
+            width: 100%; 
+            max-width: 80px;
         }
         .ampm-btn { 
             flex: 1; 
             border: none; 
             background: transparent; 
-            font-size: 9px; 
+            font-size: 10px; 
             font-weight: 700; 
-            padding: 2px 0; 
+            padding: 4px 0; 
             cursor: pointer; 
-            border-radius: 3px; 
+            border-radius: 4px; 
             color: var(--text-sub); 
         }
         .ampm-btn.active { 
@@ -283,8 +292,8 @@
             color: var(--accent); 
         }
         .clock-container { 
-            width: 105px; 
-            height: 110px; 
+            width: 95px; 
+            height: 95px; 
             border-radius: 50%; 
             background: var(--surface); 
             border: 2px solid var(--primary); 
@@ -303,7 +312,7 @@
         }
         .hand-hour { 
             width: 3px; 
-            height: 24px; 
+            height: 22px; 
             background: var(--primary); 
             position: absolute; bottom: 50%; 
             left: 50%; 
@@ -312,7 +321,7 @@
         }
         .hand-minute { 
             width: 2px; 
-            height: 36px; 
+            height: 32px; 
             background: var(--accent); 
             position: absolute; 
             bottom: 50%; 
@@ -322,12 +331,13 @@
         }
         .clock-number { 
             position: absolute; 
-            font-size: 9px; 
+            font-size: 8px; 
             font-weight: 700; 
             color: #94a3b8; 
             transform: translate(-50%, -50%); 
             pointer-events: none; 
         }
+        
         .btn-submit { 
             background: #1e3a8a; 
             color: white; 
@@ -338,44 +348,49 @@
             font-size: 14px; 
             font-weight: 600; 
             width: 100%; 
-            min-height: 42px; 
+            min-height: 44px; 
             margin-top: 10px; 
         }
         .btn-remove-block { 
             background: transparent; 
             border: none; 
             color: var(--danger); 
-            font-size: 11px; 
+            font-size: 12px; 
             font-weight: 600; 
             cursor: pointer; 
+            padding: 4px;
         }
+        
+        /* テーブルの見切れ対策（スマホで横スクロール可能に） */
         .table-container { 
             width: 100%; 
             overflow-x: auto; 
             border-radius: 12px; 
             border: 1px solid var(--border); 
+            -webkit-overflow-scrolling: touch; 
         }
         table { 
             width: 100%; 
             border-collapse: collapse; 
             text-align: left; 
-            font-size: 13px; 
+            font-size: 12px; 
             table-layout: auto; 
+            min-width: 540px; /* スマホで潰れないよう最低幅を設定 */
         }
         th { 
             font-weight: 600; 
             color: var(--text-sub); 
-            padding: 12px 10px; 
+            padding: 10px 8px; 
             border-bottom: 1px solid var(--border); 
             background: #f8fafc; 
-            font-size: 12px; 
         }
         td { 
-            padding: 12px 10px; 
+            padding: 10px 8px; 
             border-bottom: 1px solid var(--border); 
             color: var(--text-main); 
             vertical-align: middle; 
         }
+        
         .badge-job { 
             display: inline-flex; 
             padding: 2px 6px; 
@@ -388,16 +403,17 @@
         .badge-絵画造形 { background: #fffbeb; color: #d97706; }
         .badge-インターン { background: #f0fdf4; color: #16a34a; }
         .badge-その他 { background: #f1f5f9; color: #475569; }
+        
         .campus-prefix { 
             font-weight: 700; 
             color: var(--primary); 
-            font-size: 12px; 
+            font-size: 11px; 
             display: block; 
-            margin-bottom: 4px; 
+            margin-bottom: 2px; 
         }
         .thumb-receipt { 
-            width: 36px; 
-            height: 36px; 
+            width: 38px; 
+            height: 38px; 
             object-fit: cover; 
             border-radius: 6px; 
             border: 1px solid var(--border); 
@@ -405,7 +421,7 @@
         }
         .action-links { 
             display: flex; 
-            gap: 8px; 
+            gap: 12px; 
             justify-content: flex-end; 
         }
         .btn-link { 
@@ -414,25 +430,60 @@
             font-size: 12px; 
             font-weight: 600; 
             cursor: pointer; 
-            color: var(--text-sub); 
+            padding: 4px;
         }
         .btn-link.del { color: var(--danger); }
         .btn-link.edit { color: var(--accent); }
+        
+        /* 経費リストのスマホ最適化 */
         .expense-mini-list { 
-            margin-top: 12px; 
+            margin-top: 14px; 
             border-top: 1px solid var(--border); 
             padding-top: 10px; 
-            max-height: 180px; 
+            max-height: 220px; 
             overflow-y: auto; 
         }
         .expense-item { 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            font-size: 11px; 
-            padding: 6px 0; 
+            font-size: 12px; 
+            padding: 8px 0; 
             border-bottom: 1px dashed #f1f5f9; 
+            gap: 8px;
         }
+        .expense-item > div:first-child {
+            flex: 1;
+            line-height: 1.4;
+        }
+        
+        /* ファイルインポート枠を押しやすく */
+        .upload-area {
+            position: relative;
+            width: 100%;
+        }
+        #exp-file-label {
+            display: block; 
+            padding: 12px; 
+            border: 1px dashed var(--border); 
+            border-radius: 10px; 
+            text-align: center; 
+            background: #f8fafc; 
+            cursor: pointer; 
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-sub);
+        }
+        #exp-file {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
         .lightbox { 
             display: none; 
             position: fixed; 
@@ -447,9 +498,29 @@
             align-items: center; 
         }
         .lightbox img { 
-            max-width: 90%; 
-            max-height: 80%; 
+            max-width: 95%; 
+            max-height: 85%; 
             border-radius: 12px; 
+        }
+
+        /* PC・タブレット向けのレイアウト（画面幅が広い場合のみグリッド化） */
+        @media (min-width: 1100px) {
+            body { padding: 24px; }
+            .header-area { flex-wrap: nowrap; gap: 16px; }
+            .month-selector-zone { width: auto; }
+            .dashboard-grid { grid-template-columns: repeat(4, 1fr); gap: 16px; }
+            .main-layout { display: grid; grid-template-columns: minmax(320px, 350px) minmax(340px, 420px) 1fr; gap: 20px; }
+            .stat-card { padding: 20px; }
+            .stat-value { font-size: 22px; }
+            .panel { padding: 20px; }
+            table { font-size: 13px; min-width: auto; }
+            th, td { padding: 12px 10px; }
+            .time-picker-ui { padding: 10px; }
+            .clock-container { width: 105px; height: 110px; }
+            .hand-hour { height: 24px; }
+            .hand-minute { height: 36px; }
+            .clock-number { font-size: 9px; }
+            .time-range-display { font-size: 14px; }
         }
     </style>
 </head>
@@ -514,7 +585,7 @@
                 <div class="expense-mini-list" id="expense-mini-list"></div>
             </div>
             <div class="panel">
-                <div class="form-panel-title" id="form-panel-title">本日のシフトを登録</div>
+                <div class="panel-title" id="form-panel-title">本日のシフトを登録</div>
                 <div class="form-stack">
                     <div class="field">
                         <label>勤務日</label>
@@ -580,7 +651,40 @@
         let shiftBlockCount = 0;
         let editingDateKey = null;
         let editingExpenseIndex = null;
-        let appData = JSON.parse(localStorage.getItem('v17_appMasterData')) || { shifts: {}, expenses: {} };
+        
+        let appData = { shifts: {}, expenses: {} };
+        const storageKeys = ['v17_appMasterData', 'appMasterData', 'v16_appMasterData', 'v15_appMasterData'];
+        
+        for (const key of storageKeys) {
+            const raw = localStorage.getItem(key);
+            if (raw) {
+                try {
+                    const parsed = JSON.parse(raw);
+                    if (parsed && (parsed.shifts || parsed.expenses)) {
+                        if (parsed.shifts) {
+                            for (const m in parsed.shifts) {
+                                if (!appData.shifts[m]) appData.shifts[m] = [];
+                                parsed.shifts[m].forEach(newS => {
+                                    const exists = appData.shifts[m].some(oldS => oldS.date === newS.date && oldS.timeSpan === newS.timeSpan && oldS.job === newS.job);
+                                    if (!exists) appData.shifts[m].push(newS);
+                                });
+                            }
+                        }
+                        if (parsed.expenses) {
+                            for (const m in parsed.expenses) {
+                                if (!appData.expenses[m]) appData.expenses[m] = [];
+                                parsed.expenses[m].forEach(newE => {
+                                    const exists = appData.expenses[m].some(oldE => oldE.date === newE.date && oldE.amount === newE.amount && oldE.note === newE.note);
+                                    if (!exists) appData.expenses[m].push(newE);
+                                });
+                            }
+                        }
+                    }
+                } catch(e) { console.error("Data migration error for key: " + key, e); }
+            }
+        }
+        localStorage.setItem('v17_appMasterData', JSON.stringify(appData));
+
         const monthSelect = document.getElementById('global-month');
         const currentTargetDate = new Date();
         currentTargetDate.setMonth(currentTargetDate.getMonth() + 1); 
@@ -609,6 +713,12 @@
             const transitInput = document.getElementById('global-transit');
             if (campus === '亀戸') transitInput.value = 1035;
             else transitInput.value = 0;
+            
+            document.querySelectorAll('.shift-block-input').forEach(block => {
+                const id = block.getAttribute('data-block-id');
+                const job = block.timeState.job;
+                toggleWageFieldVisibility(id, job, campus);
+            });
         }
 
         function resetShiftForm() {
@@ -623,7 +733,18 @@
             addShiftBlock('絵画造形', { ampm: 'PM', hour: 4, minute: 0 }, { ampm: 'PM', hour: 6, minute: 0 });
         }
 
-        function addShiftBlock(defaultJob = '保育', startDefault = {ampm:'PM', hour:1, minute:0}, endDefault = {ampm:'PM', hour:5, minute:30}) {
+        function toggleWageFieldVisibility(id, job, currentCampus) {
+            const block = document.getElementById(`block-${id}`);
+            if (!block) return;
+            const customField = block.querySelector('.custom-wage-wrapper');
+            if (job === 'その他' || currentCampus === '開その他' || currentCampus === 'その他') {
+                customField.classList.remove('hidden');
+            } else {
+                customField.classList.add('hidden');
+            }
+        }
+
+        function addShiftBlock(defaultJob = '保育', startDefault = {ampm:'PM', hour:1, minute:0}, endDefault = {ampm:'PM', hour:5, minute:30}, loadedWage = null) {
             shiftBlockCount++;
             const id = shiftBlockCount;
             const blockHtml = `
@@ -666,15 +787,24 @@
                 </div>
             </div>`;
             document.getElementById('shift-blocks-container').insertAdjacentHTML('beforeend', blockHtml);
+            
+            const initialWage = defaultJob === '絵画造形' ? 1600 : 1400;
             const blockEl = document.getElementById(`block-${id}`);
             blockEl.timeState = {
-                job: defaultJob, wage: defaultJob==='絵画造形'?1600:1400,
+                job: defaultJob, 
+                wage: loadedWage !== null ? loadedWage : initialWage,
                 start: { ampm: startDefault.ampm, hour: startDefault.hour, minute: startDefault.minute },
                 end: { ampm: endDefault.ampm, hour: endDefault.hour, minute: endDefault.minute }
             };
+            
+            if (loadedWage !== null && (defaultJob === 'その他' || globalCampus === 'その他')) {
+                blockEl.querySelector('.custom-wage-input').value = loadedWage;
+            }
+
             setupClockMechanics(id, true);
             setupClockMechanics(id, false);
             calculateBlockTime(id);
+            toggleWageFieldVisibility(id, defaultJob, globalCampus);
         }
 
         function removeShiftBlock(id) {
@@ -684,12 +814,12 @@
 
         function setBlockJob(id, job, wage, btn) {
             const block = document.getElementById(`block-${id}`);
-            block.timeState.job = job; block.timeState.wage = wage;
+            block.timeState.job = job; 
+            block.timeState.wage = wage;
             btn.parentElement.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            const customField = block.querySelector('.custom-wage-wrapper');
-            if (job === 'その他') customField.classList.remove('hidden');
-            else customField.classList.add('hidden');
+            
+            toggleWageFieldVisibility(id, job, globalCampus);
         }
 
         function setBlockAmpm(id, isStart, mode, btn) {
@@ -709,8 +839,8 @@
                 const num = document.createElement('div');
                 num.className = 'clock-number'; num.innerText = i;
                 const angle = (i * 30) * Math.PI / 180;
-                num.style.left = (52 + Math.sin(angle) * 38) + 'px';
-                num.style.top = (55 - Math.cos(angle) * 38) + 'px';
+                num.style.left = (47 + Math.sin(angle) * 33) + 'px';
+                num.style.top = (47 - Math.cos(angle) * 33) + 'px';
                 clock.appendChild(num);
             }
             const hHand = clock.querySelector('.hand-hour');
@@ -746,7 +876,7 @@
                 const clientX = e.touches ? e.touches[0].clientX : e.clientX;
                 const clientY = e.touches ? e.touches[0].clientY : e.clientY;
                 const dist = Math.sqrt(Math.pow(clientX - centerX, 2) + Math.pow(clientY - centerY, 2));
-                activeHand = (dist < 24) ? 'hour' : 'minute';
+                activeHand = (dist < 20) ? 'hour' : 'minute';
                 onMove(e);
             }
             clock.addEventListener('mousedown', onStart);
@@ -786,18 +916,26 @@
             document.getElementById('btn-save-shift').innerText = "変更を確定して保存";
             const dateInput = document.getElementById('shift-date');
             dateInput.value = dateKey;
-            dateInput.disabled = true;
+            dateInput.disabled = false;
+            
             const first = shiftsToEdit[0];
             const transitInput = document.getElementById('global-transit');
             transitInput.value = first.transit;
+            
+            let isKnownCampus = (first.campus === '亀戸' || first.campus === '下高井戸');
+            let campusMode = isKnownCampus ? first.campus : 'その他';
+            
             let targetCampusBtn = null;
             document.querySelectorAll('.panel:nth-child(2) .pill-box:nth-of-type(1) .pill-btn').forEach(btn => {
-                if (btn.innerText === first.campus) targetCampusBtn = btn;
+                if (btn.innerText === campusMode) targetCampusBtn = btn;
             });
-            if (targetCampusBtn) setGlobalCampus(first.campus, targetCampusBtn);
-            if (first.campus !== '亀戸' && first.campus !== '下高井戸') {
+            if (targetCampusBtn) setGlobalCampus(campusMode, targetCampusBtn);
+            if (!isKnownCampus) {
                 document.getElementById('custom-campus-name').value = first.campus;
+            } else {
+                document.getElementById('custom-campus-name').value = '';
             }
+            
             let totalAllowance = 0;
             let combinedMemo = [];
             shiftsToEdit.forEach(s => {
@@ -806,21 +944,24 @@
             });
             document.getElementById('custom-allowance').value = totalAllowance;
             document.getElementById('shift-memo').value = combinedMemo.join(' / ');
+            
             const container = document.getElementById('shift-blocks-container');
             container.innerHTML = '';
             shiftBlockCount = 0;
+            
             shiftsToEdit.forEach(s => {
                 try {
                     const parts = s.timeSpan.split('-');
                     const sPart = parts[0], ePart = parts[1];
                     const startObj = { ampm: sPart.slice(-2), hour: parseInt(sPart.slice(0,2)), minute: parseInt(sPart.slice(3,5)) };
                     const endObj = { ampm: ePart.slice(-2), hour: parseInt(ePart.slice(0,2)), minute: parseInt(ePart.slice(3,5)) };
-                    addShiftBlock(s.job, startObj, endObj);
+                    addShiftBlock(s.job, startObj, endObj, s.wage);
                 } catch (e) {
-                    addShiftBlock(s.job);
+                    addShiftBlock(s.job, { ampm: 'PM', hour: 3, minute: 0 }, { ampm: 'PM', hour: 4, minute: 0 }, s.wage);
                 }
             });
             renderDashboard();
+            document.getElementById('shift-date').scrollIntoView({ behavior: 'smooth' });
         }
 
         function submitAllShifts() {
@@ -831,6 +972,7 @@
             if (!date) { alert('日付を指定してください。'); return; }
             const blocks = document.querySelectorAll('.shift-block-input');
             if (blocks.length === 0) { alert('セッションを1つ以上追加してください。'); return; }
+            
             if (editingDateKey) {
                 appData.shifts[activeMonth] = appData.shifts[activeMonth].filter(s => s.date !== editingDateKey);
             }
@@ -839,11 +981,13 @@
             if (globalCampus === 'その他') {
                 finalCampusName = document.getElementById('custom-campus-name').value || '他校舎';
             }
+            
             blocks.forEach((block) => {
                 const state = block.timeState;
                 let wage = state.wage;
-                if (state.job === 'その他') {
-                    wage = parseFloat(block.querySelector('.custom-wage-input').value) || 0;
+                if (state.job === 'その他' || globalCampus === 'その他') {
+                    const customInputVal = parseFloat(block.querySelector('.custom-wage-input').value);
+                    wage = !isNaN(customInputVal) ? customInputVal : (state.job === '絵画造形' ? 1600 : 1400);
                 }
                 const hrs = state.calculatedHours;
                 const pay = Math.floor(wage * hrs);
@@ -1030,8 +1174,8 @@
                     <div><strong>[${e.campus}]</strong> ¥${e.amount.toLocaleString()}<br><span style="color:var(--text-sub); font-size:10px;">${e.date} - ${e.note}</span></div>
                     <div style="display:flex; align-items:center; gap:6px;">
                         ${imgNode}
-                        <button class="btn-link edit" style="font-size:11px; background:none; border:none; color:var(--accent); cursor:pointer;" onclick="editExpense('${origIdx}')">編集</button>
-                        <button class="btn-link del" style="font-size:11px; background:none; border:none; color:var(--danger); cursor:pointer;" onclick="removeExpense('${origIdx}')">削除</button>
+                        <button class="btn-link edit" style="font-size:12px; background:none; border:none; color:var(--accent); cursor:pointer;" onclick="editExpense('${origIdx}')">編集</button>
+                        <button class="btn-link del" style="font-size:12px; background:none; border:none; color:var(--danger); cursor:pointer;" onclick="removeExpense('${origIdx}')">削除</button>
                     </div>
                 </div>`;
                 eMinilist.insertAdjacentHTML('beforeend', item);
@@ -1046,8 +1190,8 @@
             pbKameido.className = `progress-bar ${kPct >= 90 ? 'danger' : kPct >= 60 ? 'warning' : ''}`;
             document.getElementById('dash-takaido-rem').innerText = '¥' + tRem.toLocaleString();
             document.getElementById('dash-takaido-used').innerText = `利用: ¥${takaidoUsed.toLocaleString()} / 上限: ¥2,000`;
-            const pbTakaido = document.getElementById('pb-takaido'); pbTakaido.style.width = tPct + '%';
-            pbTakaido.className = `progress-bar ${tPct >= 90 ? 'danger' : tPct >= 60 ? 'warning' : ''}`;
+            const pbTakaido = document.getElementById('pb-Takaido'); if(pbTakaido) { pbTakaido.style.width = tPct + '%'; pbTakaido.className = `progress-bar ${tPct >= 90 ? 'danger' : tPct >= 60 ? 'warning' : ''}`; }
+            const pbTakaidoCorrect = document.getElementById('pb-takaido'); if(pbTakaidoCorrect) { pbTakaidoCorrect.style.width = tPct + '%'; pbTakaidoCorrect.className = `progress-bar ${tPct >= 90 ? 'danger' : tPct >= 60 ? 'warning' : ''}`; }
         }
     </script>
 </body>
